@@ -26,6 +26,11 @@ from utilities.linknet import model as lnm
 
 
 def unet():
+    EPOCHS = 35
+    BATCH_SIZE = 32
+    ImgHieght = 256
+    ImgWidth = 256
+    Channels = 3
     input_img = Input((ImgHieght, ImgWidth, 3), name='img')
     model = get_unet(input_img, n_filters=16, dropout=0.2, batchnorm=True)
     model.compile(optimizer=Adam(), loss="binary_crossentropy", metrics=[tf.keras.metrics.MeanSquaredError()])
@@ -67,6 +72,11 @@ def unet():
 
 
 def linknet_t():
+    EPOCHS = 35
+    BATCH_SIZE = 32
+    ImgHieght = 256
+    ImgWidth = 256
+    Channels = 3
     model=lnm
     model.compile(optimizer='adam', loss="binary_crossentropy", metrics=[tf.keras.metrics.MeanSquaredError()])
     callbacks = [
@@ -75,27 +85,27 @@ def linknet_t():
         ModelCheckpoint('model/model-linknet.h5', verbose=1, save_best_only=True, save_weights_only=True)
     ]
     model.summary()
-    # STEP_SIZE_TRAIN = timage_generator.n/BATCH_SIZE
-    # STEP_SIZE_VALID = vimage_generator.n/BATCH_SIZE
-    # results = model.fit(train_gen,
-    #                     steps_per_epoch=STEP_SIZE_TRAIN,
-    #                     batch_size=BATCH_SIZE,
-    #                     epochs=EPOCHS,
-    #                     callbacks=callbacks,
-    #                     validation_data=valid_gen,
-    #                     validation_steps=STEP_SIZE_VALID)
-    # from matplotlib import pyplot as plt
-    # import seaborn as sns
-    # plt.figure(figsize=(8, 8))
-    # plt.title("Learning curve")
-    # plt.plot(results.history["loss"], label="loss", color=sns.xkcd_rgb['greenish teal'])
-    # plt.plot(results.history["val_loss"], label="val_loss", color=sns.xkcd_rgb['amber'])
-    # plt.plot( np.argmin(results.history["val_loss"]), np.min(results.history["val_loss"]), marker="x", color="r", label="best model")
-    # plt.xlabel("Epochs")
-    # plt.ylabel("log_loss")
-    # plt.legend()
-    # # plt.grid(False)
-    # plt.show()
+    STEP_SIZE_TRAIN = timage_generator.n/BATCH_SIZE
+    STEP_SIZE_VALID = vimage_generator.n/BATCH_SIZE
+    results = model.fit(train_gen,
+                        steps_per_epoch=STEP_SIZE_TRAIN,
+                        batch_size=BATCH_SIZE,
+                        epochs=EPOCHS,
+                        callbacks=callbacks,
+                        validation_data=valid_gen,
+                        validation_steps=STEP_SIZE_VALID)
+    from matplotlib import pyplot as plt
+    import seaborn as sns
+    plt.figure(figsize=(8, 8))
+    plt.title("Learning curve")
+    plt.plot(results.history["loss"], label="loss", color=sns.xkcd_rgb['greenish teal'])
+    plt.plot(results.history["val_loss"], label="val_loss", color=sns.xkcd_rgb['amber'])
+    plt.plot( np.argmin(results.history["val_loss"]), np.min(results.history["val_loss"]), marker="x", color="r", label="best model")
+    plt.xlabel("Epochs")
+    plt.ylabel("log_loss")
+    plt.legend()
+    # plt.grid(False)
+    plt.show()
 
 if __name__ == "__main__":
     import argparse

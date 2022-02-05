@@ -1,2 +1,9 @@
 data/*
 !data/README.md
+
+/**/__pycache__/**/*
+/./**/__pycache__/**/*
+./**/__pycache__/**/*
+**/__pycache__/**/*
+*/__pycache__/**/*
+__pycache__/**/*
