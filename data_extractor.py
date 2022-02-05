@@ -29,4 +29,4 @@ for i in range(1,11):
 
 data=pd.DataFrame({'image': images, 'mask':mask}, columns=['image', 'mask'])
 
-data.to_csv('data/paths',index=False)
+data.to_csv('data/paths.csv',index=False)
